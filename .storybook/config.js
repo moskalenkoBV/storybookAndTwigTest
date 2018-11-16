@@ -1,9 +1,7 @@
 import { configure } from '@storybook/html';
+import path from 'path';
+import buildTree from '../buildUtils/buildTree'
 
-// automatically import all files ending in *.stories.js
-const req = require.context('../stories', true, /.stories.js$/);
-function loadStories() {
-  req.keys().forEach(filename => req(filename));
-}
+const configs = require.context('../components', true, /.config.js$/);
 
-configure(loadStories, module);
+configure(buildTree(configs), module);

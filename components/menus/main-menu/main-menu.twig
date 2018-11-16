@@ -1,0 +1,35 @@
+<ul>
+
+</ul>
+
+{% import _self as menus %}
+
+{% macro menu_links(items, attributes, menu_level) %}
+
+	{% import _self as menus %}
+
+	{% set ul_classes = 'main-menu__ul main-menu__ul--' ~ (menu_level + 1) %}
+
+	<ul class="{{ ul_classes }}">
+		{% for item in items %}
+			<li class="main-menu__li {{ item.below is not empty ? 'main-menu__li--has-children' }}">
+				{% if item.url %}
+					<a href="{{ item.href }}" title="{{ item.title }}">{{ item.title }}</a>
+				{% else %}
+					<span>{{ item.title }}</span>
+				{% endif %}
+
+				{% if item.below is not empty %}
+					{{ menus.menu_links(item.below, attributes, menu_level + 1) }}
+				{% endif %}
+			</li>
+		{% endfor %}
+	</ul>
+
+{% endmacro %}
+
+{% if items %}
+	<div class="main-menu">
+	  {{ menus.menu_links(items, attributes, 0) }}
+	</div>
+{% endif %}
