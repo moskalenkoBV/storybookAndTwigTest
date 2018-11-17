@@ -12,6 +12,47 @@ const autoprefixerObject = new autoprefixer({
   flexbox: 'no-2009'
 });
 
+let scssOptionsProd = [
+  {
+    loader: "css-loader"
+  },
+  {
+    loader: "postcss-loader",
+    options: {
+      plugins: [
+        autoprefixerObject
+      ]
+    }
+  },
+  {
+    loader: "sass-loader",
+    options: {
+      importer: NodeSassGlobImporter()
+    }
+}];
+
+let scssOptionsDev = [
+  {
+    loader: "style-loader"
+  },
+  {
+    loader: "css-loader"
+  },
+  {
+    loader: "postcss-loader",
+    options: {
+      plugins: [
+        autoprefixerObject
+      ]
+    }
+  },
+  {
+    loader: "sass-loader",
+    options: {
+      importer: NodeSassGlobImporter()
+    }
+}];
+
 const ExtractTextWebpackPluginObject = new ExtractTextWebpackPlugin('build/css/main.css');
 
 module.exports = (storybookBaseConfig, configType) => {
@@ -24,27 +65,18 @@ module.exports = (storybookBaseConfig, configType) => {
     loader: 'twig-loader'
   });
 
-  storybookBaseConfig.module.rules.push({
-    test: /\.scss$/,
-    loaders: ExtractTextWebpackPlugin.extract([
-      {
-        loader: "css-loader"
-      },
-      {
-        loader: "postcss-loader",
-        options: {
-          plugins: [
-            autoprefixerObject
-          ]
-        }
-      },
-      {
-        loader: "sass-loader",
-        options: {
-          importer: NodeSassGlobImporter()
-        }
-    }])
-  });
+  if(process.env.NODE_ENV !== 'development') {
+    storybookBaseConfig.module.rules.push({
+      test: /\.scss$/,
+      loaders: ExtractTextWebpackPlugin.extract(scssOptionsProd)
+    });
+  }
+  else {
+    storybookBaseConfig.module.rules.push({
+      test: /\.scss$/,
+      loaders: scssOptionsDev
+    });
+  }
 
   storybookBaseConfig.plugins.push(ExtractTextWebpackPluginObject)
 
