@@ -1,4 +1,4 @@
-import { configure } from '@storybook/html';
+import { configure, storyOf } from '@storybook/html';
 import path from 'path';
 import buildTree from '@root/buildUtils/buildTree'
 import '../src/assets/styles/main.scss'

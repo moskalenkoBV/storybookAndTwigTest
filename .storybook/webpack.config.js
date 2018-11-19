@@ -60,6 +60,8 @@ module.exports = (storybookBaseConfig, configType) => {
   storybookBaseConfig.resolve.alias['@root'] = path.resolve(__dirname, '../');
   storybookBaseConfig.resolve.alias['@src'] = path.resolve(__dirname, '../src/');
 
+  storybookBaseConfig.entry.behaviors = path.resolve(__dirname, '../src/assets/scripts/behaviors.js');
+
   storybookBaseConfig.module.rules.push({
     test: /\.twig$/,
     loader: 'twig-loader'
